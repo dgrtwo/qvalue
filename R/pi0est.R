@@ -19,7 +19,8 @@
 #' If no options are selected, then the method used to estimate \eqn{\pi_0}{pi_0} is
 #' the smoother method described in Storey and Tibshirani (2003). The
 #' bootstrap method is described in Storey, Taylor & Siegmund (2004). A closed form solution of the
-#' bootstrap method is used in the package and is significantly faster.
+#' bootstrap method is used in the package and is significantly faster (see
+#' \url{http://varianceexplained.org/files/pi0boot.pdf} for the derivation).
 #'
 #' @return Returns a list:
 #' \item{pi0}{A numeric that is the estimated proportion
@@ -118,6 +119,7 @@ pi0est <- function(p, lambda = seq(0.05,0.95,0.05), pi0.method = c("smoother", "
       }
     } else if (pi0.method == "bootstrap") {
       # Bootstrap method closed form solution by David Robinson
+      # see here for derivation: http://varianceexplained.org/files/pi0boot.pdf
       minpi0 <- quantile(pi0, prob = 0.1)
       W <- sapply(lambda, function(l) sum(p >= l))
       mse <- (W / (m ^ 2 * (1 - lambda) ^ 2)) * (1 - W / m) + (pi0 - minpi0) ^ 2
